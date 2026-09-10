@@ -362,7 +362,7 @@ export default function WebVitalsBefore() {
         <h2 style={{ color: '#ff6b4a', fontSize: 20, marginBottom: 16 }}>
           Heavy Data List — 2000 DOM nodes (Causes Jank)
         </h2>
-        <div ref={listRef} style={{ maxHeight: 400, overflow: 'auto' }}>
+        <div ref={listRef} style={{ maxHeight: 400, overflow: 'auto' }} suppressHydrationWarning>
           {processedNames.map((name, index) => {
             const item = sortedEveryRender[index];
             return (
@@ -374,6 +374,7 @@ export default function WebVitalsBefore() {
                   display: 'flex',
                   justifyContent: 'space-between',
                 }}
+                suppressHydrationWarning
               >
                 <span style={{ color: '#cbd5e1' }}>{name}</span>
                 <span style={{ color: '#22d3ee' }}>{item.value.toFixed(2)}</span>
