@@ -11,6 +11,15 @@
  * a custom server, or CI. They're called out in a comment block at the
  * bottom so the episode still covers all 58, with a note on where each
  * one actually lives in a real project.
+ *
+ * CLS NOTE: the `vitals.cls` number shown in the "Core Web Vitals" card
+ * below is a fake, hardcoded-random display value — it is NOT what your
+ * browser's real Layout Instability API measures. If Chrome DevTools /
+ * the Web Vitals extension shows CLS as green, that's because nothing on
+ * the page was ACTUALLY shifting visible, already-painted content. The
+ * `showBanner` block added below fixes that: it injects a full block of
+ * content with zero reserved space ~1.2s after first paint, which is a
+ * textbook, guaranteed, camera-ready layout shift.
  */
 
 'use client';
@@ -114,6 +123,9 @@ export default function WebVitalsBefore() {
   // so every keystroke re-renders the whole page, including the 2000-row list
   // and the chart below, since nothing here is memoized
   const [searchText, setSearchText] = useState('');
+  // CLS DEMO: a block of content that is injected AFTER first paint with zero
+  // reserved space — this is what actually moves the CLS needle from green to red
+  const [showBanner, setShowBanner] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
 
   // ISSUE #25: heavy computation repeated on every render, no useMemo
@@ -159,6 +171,11 @@ export default function WebVitalsBefore() {
       }, 1000);
     };
     measureVitals();
+
+    // CLS DEMO: fires ~1.2s after mount, once the user has already seen and
+    // "settled into" the layout — this is exactly the real-world pattern
+    // (late ads, late cookie banners, late-loading widgets) that tanks CLS
+    setTimeout(() => setShowBanner(true), 1200);
 
     // ISSUE #29: setState called directly inside a loop — one commit per iteration
     for (let i = 0; i < 20; i++) {
@@ -266,6 +283,31 @@ export default function WebVitalsBefore() {
           هذه الصفحة تحاكي جميع مشاكل الأداء في Lighthouse و Performance Tab و GTmetrix.
         </p>
 
+        {/* CLS DEMO: appears ~1.2s late with a hardcoded height and zero
+            reserved space beforehand — pushes the hero image and everything
+            below it down the page after the user has already seen it settle.
+            This alone is enough to flip CLS from green to a hard red/poor. */}
+        {showBanner && (
+          <div
+            style={{
+              marginTop: 24,
+              height: 220,
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#ff6b4a,#a78bfa)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: 20,
+              fontWeight: 700,
+              textAlign: 'center',
+              padding: '0 24px',
+            }}
+          >
+            🔥 عرض خاص محدود! (إعلان أُدرج متأخراً بدون مساحة محجوزة مسبقًا — سبب مباشر لـ CLS سيئ)
+          </div>
+        )}
+
         <img src={TINY_IMAGE_AS_BASE64} alt="Inline base64" style={{ width: '100%', height: 'auto', marginTop: 24 }} />
 
         {/* ISSUE #4 + #7: next/image IS used for the Hero, but with loading="lazy"
@@ -348,7 +390,7 @@ export default function WebVitalsBefore() {
             <ul style={{ paddingLeft: 20 }}>
               <li>35. قراءة offsetHeight أو getBoundingClientRect داخل الحلقات</li>
               <li>36. تحريك خصائص مثل left / top / width بدلاً من transform</li>
-              <li>37. تشغيل تأثيرات حركية CSS على خصائص غير مدعومة بالـ GPU</li>
+              <li> تشغيل تأثيرات حركية CSS على خصائص غير مدعومة بالـ GPU</li>
               <li>38. حدوث Layout Thrashing وتحذيرات الأداء في DevTools</li>
               <li>39. مهام طويلة Long tasks تتجاوز 50 ميلي ثانية</li>
               <li>40. عمليات ثقيلة متزامنة داخل useEffect</li>
@@ -377,7 +419,7 @@ export default function WebVitalsBefore() {
               <li>51. جعل كل شيء يتبع نمط 'use client'</li>
               <li>52. استخدام force-dynamic في صفحات ثابتة بلا مبرر</li>
               <li>53. غياب revalidate للبيانات شبه الثابتة</li>
-              <li>54. جلب البيانات من جهة العميل (Client-side) لبيانات ثابتة</li>
+              <li> جلب البيانات من جهة العميل (Client-side) لبيانات ثابتة</li>
             </ul>
 
             <h3 style={{ color: '#ff6b4a', marginTop: 12 }}>9. CSS-IN-JS — التنسيق الديناميكي</h3>
