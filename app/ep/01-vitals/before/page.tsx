@@ -37,13 +37,13 @@ import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import styled from '@emotion/styled';
 
 // ISSUE #23: dev-only debug helper with no NODE_ENV guard — ships straight to prod
-import debugLogger from '../../../components/debug-logger';
+import debugLogger from '../../../../components/debug-logger';
 
 // ISSUE #20: heavy component imported eagerly at the top of the module
-import HeavyDataGrid from '../../../components/HeavyDataGrid';
+import HeavyDataGrid from '../../../../components/HeavyDataGrid';
 
 // ISSUE #21: lazy-loaded component with NO <Suspense> boundary around its usage below
-const HeavyEditor = lazy(() => import('../../../components/HeavyEditor'));
+const HeavyEditor = lazy(() => import('../../../../components/HeavyEditor'));
 
 // ISSUE #56/#57: deeply nested styled() chain, used for elements plain CSS classes
 // would have handled just as well
