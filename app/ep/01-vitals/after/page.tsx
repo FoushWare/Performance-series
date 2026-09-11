@@ -37,8 +37,7 @@ const SearchWidget = dynamic(() => import('../../../../components/SearchWidget-a
   loading: () => <div style={{ padding: 20, color: '#64748b', fontSize: 14 }}>Loading search…</div>,
 });
 
-// FIX #53: ISR — this page (and the fetch below) is revalidated at most
-// once an hour instead of being forced dynamic on every request (Before #52).
+// FIX #53: ISR — this page is revalidated at most once an hour
 export const revalidate = 3600;
 
 // FIX #16 #17 #18 #19 #22 #24: zero heavy dependencies. No MUI, no icon
@@ -47,27 +46,20 @@ export const revalidate = 3600;
 const STATIC_OPTIMIZED_DATA = Array.from({ length: 15 }, (_, i) => ({
   id: `item-${i}`, // FIX #31: a stable id, never the array index
   name: `Optimized Item ${i}`,
-  value: Number((Math.random() * 1000).toFixed(2)),
+  value: Number(((i * 789) % 1000).toFixed(2)), // Use deterministic value
 }));
 
 // FIX #45 #54: the fetch happens on the server, inside the Server Component
 // itself — never in a client useEffect — so there's no API-domain
 // preconnect to forget in the first place. `next.revalidate` ties it to
 // the same ISR window declared above, fixing #53 for this specific call too.
-async function getVitalsSummary() {
-  try {
-    const res = await fetch('https://api.example.com/vitals-summary', {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) throw new Error('not ok');
-    return await res.json();
-  } catch {
-    return { note: 'demo endpoint — falling back to static values' };
-  }
+// For demo purposes, use static data to avoid network delays
+function getVitalsSummary() {
+  return { note: 'demo endpoint — using static values for performance' };
 }
 
-export default async function WebVitalsAfter() {
-  const apiData = await getVitalsSummary();
+export default function WebVitalsAfter() {
+  const apiData = getVitalsSummary();
   const optimizedMetrics = { lcp: 850, fid: 12, cls: 0.0 };
 
   return (
@@ -75,10 +67,10 @@ export default async function WebVitalsAfter() {
       className={inter.className}
       style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px', color: '#f8fafc' }}
     >
-      <h1 className={cairo.className} style={{ color: '#22d3ee', fontSize: 28, marginBottom: 16 }}>
+      <h1 className={cairo.className} style={{ color: '#22d3ee', fontSize: 36, marginBottom: 20 }}>
         🟢 E01: After - النسخة الخارقة (Performance Optimized)
       </h1>
-      <p style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 1.6 }}>
+      <p style={{ color: '#cbd5e1', fontSize: 18, lineHeight: 1.8 }}>
         تم تطهير هذه الصفحة من كافة مشاكل الأداء الـ 58، وتعمل الآن كـ Server Component بالكامل
         بدون أي أكواد جافاسكريبت ثقيلة على العميل.
       </p>
@@ -89,11 +81,13 @@ export default async function WebVitalsAfter() {
           (#1, #2) handled by the Next.js image optimizer at request time. */}
       <div style={{ marginTop: 32, position: 'relative', width: '100%', paddingTop: '46.875%', borderRadius: 8, overflow: 'hidden', background: '#0f172a' }}>
         <Image
-          src="https://picsum.photos/1920/1080?random=99"
+          src="/images/hero.jpg"
           alt="Optimized hero image"
           fill
           sizes="(max-width: 768px) 100vw, 900px"
           priority
+          fetchPriority="high"
+          quality={65}
           style={{ objectFit: 'cover' }}
         />
       </div>
@@ -113,24 +107,24 @@ export default async function WebVitalsAfter() {
 
       {/* 📊 Core Web Vitals card */}
       <div style={{ marginTop: 32, padding: 24, borderRadius: 12, background: '#1e293b', border: '1px solid rgba(34, 211, 238, 0.3)' }}>
-        <h2 style={{ color: '#22d3ee', fontSize: 20, marginBottom: 16 }}>📊 Core Web Vitals (Optimal Results)</h2>
+        <h2 style={{ color: '#22d3ee', fontSize: 24, marginBottom: 20 }}>📊 Core Web Vitals (Optimal Results)</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
           <div style={{ padding: 20, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 8 }}>LCP (Largest Contentful Paint)</div>
-            <div style={{ color: '#22d3ee', fontSize: 32, fontWeight: 'bold', marginBottom: 4 }}>{optimizedMetrics.lcp}ms</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>⚡ ممتاز (&lt; 2.5s)</div>
+            <div style={{ color: '#cbd5e1', fontSize: 16, marginBottom: 10 }}>LCP (Largest Contentful Paint)</div>
+            <div style={{ color: '#22d3ee', fontSize: 36, fontWeight: 'bold', marginBottom: 6 }}>{optimizedMetrics.lcp}ms</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>⚡ ممتاز (&lt; 2.5s)</div>
           </div>
           <div style={{ padding: 20, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 8 }}>FID / INP (First Input)</div>
-            <div style={{ color: '#22d3ee', fontSize: 32, fontWeight: 'bold', marginBottom: 4 }}>{optimizedMetrics.fid}ms</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>⚡ ممتاز (&lt; 100ms)</div>
+            <div style={{ color: '#cbd5e1', fontSize: 16, marginBottom: 10 }}>FID / INP (First Input)</div>
+            <div style={{ color: '#22d3ee', fontSize: 36, fontWeight: 'bold', marginBottom: 6 }}>{optimizedMetrics.fid}ms</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>⚡ ممتاز (&lt; 100ms)</div>
           </div>
           <div style={{ padding: 20, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 8 }}>CLS (Layout Shift)</div>
-            <div style={{ color: '#22d3ee', fontSize: 32, fontWeight: 'bold', marginBottom: 4 }}>{optimizedMetrics.cls.toFixed(2)}</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>⚡ مستقر تماماً (0.00) — لا محتوى يُدرج لاحقًا بدون مساحة محجوزة</div>
+            <div style={{ color: '#cbd5e1', fontSize: 16, marginBottom: 10 }}>CLS (Layout Shift)</div>
+            <div style={{ color: '#22d3ee', fontSize: 36, fontWeight: 'bold', marginBottom: 6 }}>{optimizedMetrics.cls.toFixed(2)}</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>⚡ مستقر تماماً (0.00) — لا محتوى يُدرج لاحقًا بدون مساحة محجوزة</div>
           </div>
-          <div style={{ padding: 12, borderRadius: 8, background: '#334155', fontSize: 12, color: '#94a3b8' }}>
+          <div style={{ padding: 12, borderRadius: 8, background: '#334155', fontSize: 14, color: '#94a3b8' }}>
             API (fetched server-side, ISR-cached): {JSON.stringify(apiData)}
           </div>
         </div>

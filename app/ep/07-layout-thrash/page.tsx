@@ -11,6 +11,8 @@ export default function Episode07() {
       <div style={{ marginTop: 32, display: 'grid', gap: 16 }}>
         <Link
           href="/ep/07-layout-thrash/before"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -42,6 +44,8 @@ export default function Episode07() {
 
         <Link
           href="/ep/07-layout-thrash/after"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,

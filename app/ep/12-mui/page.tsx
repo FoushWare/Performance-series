@@ -11,6 +11,8 @@ export default function Episode12() {
       <div style={{ marginTop: 32, display: 'grid', gap: 16 }}>
         <Link
           href="/ep/12-mui/before"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -42,6 +44,8 @@ export default function Episode12() {
 
         <Link
           href="/ep/12-mui/after"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,

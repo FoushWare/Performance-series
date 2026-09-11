@@ -11,6 +11,8 @@ export default function Episode05() {
       <div style={{ marginTop: 32, display: 'grid', gap: 16 }}>
         <Link
           href="/ep/05-bundle/before"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -42,6 +44,8 @@ export default function Episode05() {
 
         <Link
           href="/ep/05-bundle/after"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,

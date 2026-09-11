@@ -102,7 +102,7 @@ const MODULE_LEVEL_HEAVY_ARRAY = (() => {
     arr.push({
       id: i,
       name: `Item ${i}`,
-      value: Math.random() * 1000,
+      value: (i * 123) % 1000, // Use deterministic value instead of Math.random() to avoid hydration error
       description: 'This is a long description that adds to the bundle size and memory usage',
       extra: 'Additional data to make the objects larger',
     });
@@ -123,9 +123,14 @@ export default function WebVitalsBefore() {
   // so every keystroke re-renders the whole page, including the 2000-row list
   // and the chart below, since nothing here is memoized
   const [searchText, setSearchText] = useState('');
-  // CLS DEMO: a block of content that is injected AFTER first paint with zero
+  // CLS DEMO: multiple blocks of content injected AFTER first paint with zero
   // reserved space — this is what actually moves the CLS needle from green to red
   const [showBanner, setShowBanner] = useState(false);
+  const [showSecondBanner, setShowSecondBanner] = useState(false);
+  const [showThirdBanner, setShowThirdBanner] = useState(false);
+  const [showFourthBanner, setShowFourthBanner] = useState(false);
+  const [showFifthBanner, setShowFifthBanner] = useState(false);
+  const [showSixthBanner, setShowSixthBanner] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
 
   // ISSUE #25: heavy computation repeated on every render, no useMemo
@@ -152,7 +157,7 @@ export default function WebVitalsBefore() {
     // ISSUE #39 + #40: long, synchronous blocking task inside useEffect (>50ms)
     const blockingStart = performance.now();
     while (performance.now() - blockingStart < 180) {
-      Math.sqrt(Math.random() * 999999);
+      Math.sqrt((Date.now() % 999999)); // Use deterministic value to avoid hydration error
     }
 
     const measureVitals = () => {
@@ -163,11 +168,11 @@ export default function WebVitalsBefore() {
       }).observe({ entryTypes: ['largest-contentful-paint'] });
 
       setTimeout(() => {
-        setVitals((prev) => ({ ...prev, fid: Math.round(Math.random() * 150 + 50) }));
+        setVitals((prev) => ({ ...prev, fid: Math.round((Date.now() % 100) + 50) }));
       }, 2000);
 
       setTimeout(() => {
-        setVitals((prev) => ({ ...prev, cls: Number((Math.random() * 0.3 + 0.15).toFixed(3)) }));
+        setVitals((prev) => ({ ...prev, cls: Number(((Date.now() % 300) / 1000 + 0.15).toFixed(3)) }));
       }, 1000);
     };
     measureVitals();
@@ -176,6 +181,13 @@ export default function WebVitalsBefore() {
     // "settled into" the layout — this is exactly the real-world pattern
     // (late ads, late cookie banners, late-loading widgets) that tanks CLS
     setTimeout(() => setShowBanner(true), 1200);
+    
+    // Additional CLS triggers at different times to make it worse
+    setTimeout(() => setShowSecondBanner(true), 2500);
+    setTimeout(() => setShowThirdBanner(true), 3800);
+    setTimeout(() => setShowFourthBanner(true), 5200);
+    setTimeout(() => setShowFifthBanner(true), 6500);
+    setTimeout(() => setShowSixthBanner(true), 7800);
 
     // ISSUE #29: setState called directly inside a loop — one commit per iteration
     for (let i = 0; i < 20; i++) {
@@ -188,7 +200,7 @@ export default function WebVitalsBefore() {
         data.push({
           id: i,
           name: `Item ${i}`,
-          value: Math.random() * 1000,
+          value: (i * 456) % 1000, // Use deterministic value
           description: 'This is a long description that adds to the bundle size and memory usage',
           extra: 'Additional data to make the objects larger and cause more memory pressure',
         });
@@ -231,7 +243,7 @@ export default function WebVitalsBefore() {
     // ISSUE #40 (cont'd): heavy synchronous work repeating inside an interval
     const interval = setInterval(() => {
       for (let i = 0; i < 5000; i++) {
-        Math.sqrt(i * Math.random());
+        Math.sqrt(i * (Date.now() % 1000)); // Use deterministic value
       }
     }, 16);
 
@@ -275,36 +287,153 @@ export default function WebVitalsBefore() {
           rel="stylesheet"
         />
 
-        <h1 style={{ color: '#ff6b4a', fontSize: 28, marginBottom: 16, fontFamily: 'Merriweather, serif' }}>
+        <h1 style={{ color: '#ff6b4a', fontSize: 36, marginBottom: 20, fontFamily: 'Merriweather, serif' }}>
           🔴 E01: Before - المشاكل الشاملة (58 مشكلة أداء)
         </h1>
 
-        <p style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 1.6 }}>
+        <p style={{ color: '#cbd5e1', fontSize: 18, lineHeight: 1.8 }}>
           هذه الصفحة تحاكي جميع مشاكل الأداء في Lighthouse و Performance Tab و GTmetrix.
         </p>
 
-        {/* CLS DEMO: appears ~1.2s late with a hardcoded height and zero
-            reserved space beforehand — pushes the hero image and everything
-            below it down the page after the user has already seen it settle.
-            This alone is enough to flip CLS from green to a hard red/poor. */}
+        {/* CLS DEMO: appears ~1.2s late with zero reserved space beforehand —
+            pushes the hero image and everything below it down the page after
+            the user has already seen it settle. This alone is enough to flip
+            CLS from green to a hard red/poor. */}
         {showBanner && (
           <div
             style={{
-              marginTop: 24,
-              height: 220,
+              margin: '24px 0',
+              padding: '32px 24px',
               borderRadius: 12,
               background: 'linear-gradient(90deg,#ff6b4a,#a78bfa)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: 'block',
               color: '#fff',
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: 700,
               textAlign: 'center',
-              padding: '0 24px',
+              lineHeight: 1.4,
+              boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)'
             }}
           >
-            🔥 عرض خاص محدود! (إعلان أُدرج متأخراً بدون مساحة محجوزة مسبقًا — سبب مباشر لـ CLS سيئ)
+            🔥 عرض خاص محدود! 
+            <div style={{ fontSize: 16, fontWeight: 400, marginTop: 8 }}>
+              إعلان أُدرج متأخراً بدون مساحة محجوزة مسبقًا — سبب مباشر لـ CLS سيئ
+            </div>
+          </div>
+        )}
+
+        {/* Second CLS trigger - appears even later */}
+        {showSecondBanner && (
+          <div
+            style={{
+              margin: '24px 0',
+              padding: '24px',
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#22d3ee,#5eead4)',
+              display: 'block',
+              color: '#0f172a',
+              fontSize: 18,
+              fontWeight: 600,
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(34, 211, 238, 0.3)'
+            }}
+          >
+            🎉 خصم إضافي 50%! 
+            <div style={{ fontSize: 14, fontWeight: 400, marginTop: 6 }}>
+              إعلان ثانٍ يظهر متأخراً لزيادة CLS
+            </div>
+          </div>
+        )}
+
+        {/* Third CLS trigger - appears even later */}
+        {showThirdBanner && (
+          <div
+            style={{
+              margin: '24px 0',
+              padding: '20px',
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#a78bfa,#f472b6)',
+              display: 'block',
+              color: '#fff',
+              fontSize: 16,
+              fontWeight: 600,
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(167, 139, 250, 0.3)'
+            }}
+          >
+            🚀 حملة جديدة! 
+            <div style={{ fontSize: 14, fontWeight: 400, marginTop: 4 }}>
+              إعلان ثالث لت compounded CLS effect
+            </div>
+          </div>
+        )}
+
+        {/* Fourth CLS trigger - appears even later */}
+        {showFourthBanner && (
+          <div
+            style={{
+              margin: '24px 0',
+              padding: '18px',
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#fbbf24,#f59e0b)',
+              display: 'block',
+              color: '#0f172a',
+              fontSize: 15,
+              fontWeight: 600,
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(251, 191, 36, 0.3)'
+            }}
+          >
+            ⭐ تقييمات جديدة! 
+            <div style={{ fontSize: 13, fontWeight: 400, marginTop: 4 }}>
+              إعلان رابع لزيادة CLS
+            </div>
+          </div>
+        )}
+
+        {/* Fifth CLS trigger - appears even later */}
+        {showFifthBanner && (
+          <div
+            style={{
+              margin: '24px 0',
+              padding: '16px',
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#10b981,#059669)',
+              display: 'block',
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 600,
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+            }}
+          >
+            💚 خصم إضافي! 
+            <div style={{ fontSize: 12, fontWeight: 400, marginTop: 4 }}>
+              إعلان خامس ل compounded CLS
+            </div>
+          </div>
+        )}
+
+        {/* Sixth CLS trigger - appears even later */}
+        {showSixthBanner && (
+          <div
+            style={{
+              margin: '24px 0',
+              padding: '14px',
+              borderRadius: 12,
+              background: 'linear-gradient(90deg,#ef4444,#dc2626)',
+              display: 'block',
+              color: '#fff',
+              fontSize: 13,
+              fontWeight: 600,
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)'
+            }}
+          >
+            🔥 عرض محدود! 
+            <div style={{ fontSize: 11, fontWeight: 400, marginTop: 4 }}>
+              إعلان سادس ل CLS سيء جداً
+            </div>
           </div>
         )}
 

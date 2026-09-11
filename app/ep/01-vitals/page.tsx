@@ -3,14 +3,16 @@ import Link from 'next/link';
 export default function Episode01() {
   return (
     <main style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px' }}>
-      <h1 style={{ color: '#ff6b4a', fontSize: 28, marginBottom: 16 }}>E01: القياس (Web Vitals)</h1>
-      <p style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 1.6 }}>
+      <h1 style={{ color: '#ff6b4a', fontSize: 36, marginBottom: 20 }}>E01: القياس (Web Vitals)</h1>
+      <p style={{ color: '#cbd5e1', fontSize: 18, lineHeight: 1.8 }}>
         هذه الحلقة تغطي جميع مشاكل الأداء الأساسية التي تؤثر على Core Web Vitals (LCP, FID, CLS) مع أمثلة عملية
       </p>
 
       <div style={{ marginTop: 32, display: 'grid', gap: 16 }}>
         <Link
           href="/ep/01-vitals/before"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -23,8 +25,8 @@ export default function Episode01() {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <h2 style={{ color: '#ff6b4a', fontSize: 20, marginBottom: 8 }}>🔴 Before - المشاكل</h2>
-              <p style={{ color: '#cbd5e1', fontSize: 14 }}>
+              <h2 style={{ color: '#ff6b4a', fontSize: 24, marginBottom: 10 }}>🔴 Before - المشاكل</h2>
+              <p style={{ color: '#cbd5e1', fontSize: 16 }}>
                 صفحة تحتوي على 58 مشكلة أداء حقيقية - كل مشكلة موثقة برمز فعلي
               </p>
             </div>
@@ -43,6 +45,8 @@ export default function Episode01() {
 
         <Link
           href="/ep/01-vitals/after"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -55,8 +59,8 @@ export default function Episode01() {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <h2 style={{ color: '#22d3ee', fontSize: 20, marginBottom: 8 }}>🟢 After - الحلول</h2>
-              <p style={{ color: '#cbd5e1', fontSize: 14 }}>
+              <h2 style={{ color: '#22d3ee', fontSize: 24, marginBottom: 10 }}>🟢 After - الحلول</h2>
+              <p style={{ color: '#cbd5e1', fontSize: 16 }}>
                 صفحة محسنة بالكامل - Server Component مع كل الحلول المطبقة
               </p>
             </div>
@@ -75,8 +79,8 @@ export default function Episode01() {
       </div>
 
       <div style={{ marginTop: 32, padding: 24, borderRadius: 12, background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)' }}>
-        <h3 style={{ color: '#22d3ee', fontSize: 18, marginBottom: 16 }}>📋 ما في نسخة Before</h3>
-        <div style={{ color: '#cbd5e1', fontSize: 14, lineHeight: 1.8 }}>
+        <h3 style={{ color: '#22d3ee', fontSize: 22, marginBottom: 20 }}>📋 ما في نسخة Before</h3>
+        <div style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 2 }}>
           <ul style={{ paddingLeft: 20 }}>
             <li>Client Component كامل مع كل الصفحة</li>
             <li>حزمة JavaScript ثقيلة (306 kB) بسبب مكتبات MUI, lodash, moment</li>
@@ -93,8 +97,8 @@ export default function Episode01() {
       </div>
 
       <div style={{ marginTop: 24, padding: 24, borderRadius: 12, background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)' }}>
-        <h3 style={{ color: '#22d3ee', fontSize: 18, marginBottom: 16 }}>✅ ما في نسخة After</h3>
-        <div style={{ color: '#cbd5e1', fontSize: 14, lineHeight: 1.8 }}>
+        <h3 style={{ color: '#22d3ee', fontSize: 22, marginBottom: 20 }}>✅ ما في نسخة After</h3>
+        <div style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 2 }}>
           <ul style={{ paddingLeft: 20 }}>
             <li>Server Component كامل (Client Component صغير فقط للتفاعل)</li>
             <li>حزمة صغيرة (94.3 kB) بدون مكتبات ثقيلة</li>
@@ -111,38 +115,38 @@ export default function Episode01() {
       </div>
 
       <div style={{ marginTop: 24, padding: 24, borderRadius: 12, background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)' }}>
-        <h3 style={{ color: '#22d3ee', fontSize: 18, marginBottom: 16 }}>📊 المقارنة المتوقعة</h3>
+        <h3 style={{ color: '#22d3ee', fontSize: 22, marginBottom: 20 }}>📊 المقارنة المتوقعة</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginTop: 16 }}>
           <div style={{ padding: 16, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 12, marginBottom: 4 }}>Page Size</div>
-            <div style={{ color: '#ff6b4a', fontSize: 14, fontWeight: 'bold' }}>Before: 214 kB</div>
-            <div style={{ color: '#22d3ee', fontSize: 14, fontWeight: 'bold' }}>After: 1.51 kB</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>-99.3%</div>
+            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 6 }}>Page Size</div>
+            <div style={{ color: '#ff6b4a', fontSize: 16, fontWeight: 'bold' }}>Before: 214 kB</div>
+            <div style={{ color: '#22d3ee', fontSize: 16, fontWeight: 'bold' }}>After: 1.51 kB</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>-99.3%</div>
           </div>
           <div style={{ padding: 16, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 12, marginBottom: 4 }}>First Load JS</div>
-            <div style={{ color: '#ff6b4a', fontSize: 14, fontWeight: 'bold' }}>Before: 306 kB</div>
-            <div style={{ color: '#22d3ee', fontSize: 14, fontWeight: 'bold' }}>After: 94.3 kB</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>-69.2%</div>
+            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 6 }}>First Load JS</div>
+            <div style={{ color: '#ff6b4a', fontSize: 16, fontWeight: 'bold' }}>Before: 306 kB</div>
+            <div style={{ color: '#22d3ee', fontSize: 16, fontWeight: 'bold' }}>After: 94.3 kB</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>-69.2%</div>
           </div>
           <div style={{ padding: 16, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 12, marginBottom: 4 }}>LCP</div>
-            <div style={{ color: '#ff6b4a', fontSize: 14, fontWeight: 'bold' }}>Before: Poor</div>
-            <div style={{ color: '#22d3ee', fontSize: 14, fontWeight: 'bold' }}>After: Excellent</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>&lt; 2.5s</div>
+            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 6 }}>LCP</div>
+            <div style={{ color: '#ff6b4a', fontSize: 16, fontWeight: 'bold' }}>Before: Poor</div>
+            <div style={{ color: '#22d3ee', fontSize: 16, fontWeight: 'bold' }}>After: Excellent</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>&lt; 2.5s</div>
           </div>
           <div style={{ padding: 16, borderRadius: 8, background: '#334155' }}>
-            <div style={{ color: '#cbd5e1', fontSize: 12, marginBottom: 4 }}>CLS</div>
-            <div style={{ color: '#ff6b4a', fontSize: 14, fontWeight: 'bold' }}>Before: Poor</div>
-            <div style={{ color: '#22d3ee', fontSize: 14, fontWeight: 'bold' }}>After: 0.00</div>
-            <div style={{ color: '#5eead4', fontSize: 12 }}>No shifts</div>
+            <div style={{ color: '#cbd5e1', fontSize: 14, marginBottom: 6 }}>CLS</div>
+            <div style={{ color: '#ff6b4a', fontSize: 16, fontWeight: 'bold' }}>Before: Poor</div>
+            <div style={{ color: '#22d3ee', fontSize: 16, fontWeight: 'bold' }}>After: 0.00</div>
+            <div style={{ color: '#5eead4', fontSize: 14 }}>No shifts</div>
           </div>
         </div>
       </div>
 
       <div style={{ marginTop: 24, padding: 24, borderRadius: 12, background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)' }}>
-        <h3 style={{ color: '#22d3ee', fontSize: 18, marginBottom: 16 }}>📋 طريقة الاختبار</h3>
-        <ol style={{ color: '#cbd5e1', fontSize: 14, lineHeight: 1.8, paddingLeft: 20 }}>
+        <h3 style={{ color: '#22d3ee', fontSize: 22, marginBottom: 20 }}>📋 طريقة الاختبار</h3>
+        <ol style={{ color: '#cbd5e1', fontSize: 16, lineHeight: 2, paddingLeft: 20 }}>
           <li>افتح صفحة "Before" لرؤية المشاكل</li>
           <li>افتح صفحة "After" لرؤية الحلول</li>
           <li>شغّل Lighthouse audit على الاتنين</li>

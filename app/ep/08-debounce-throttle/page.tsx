@@ -11,6 +11,8 @@ export default function Episode08() {
       <div style={{ marginTop: 32, display: 'grid', gap: 16 }}>
         <Link
           href="/ep/08-debounce-throttle/before"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
@@ -42,6 +44,8 @@ export default function Episode08() {
 
         <Link
           href="/ep/08-debounce-throttle/after"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'block',
             padding: 24,
